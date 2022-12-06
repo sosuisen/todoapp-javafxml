@@ -4,6 +4,10 @@
 	-fx-font-weight: bold;
 }
 
+#titleField {
+	-fx-background-radius: 20px;
+}
+
 #addBtn {
     -fx-background-color: #f0c090;
 }
