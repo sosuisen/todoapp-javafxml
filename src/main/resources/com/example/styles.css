@@ -4,6 +4,12 @@
 	-fx-font-weight: bold;
 }
 
+#rootVBox {
+	-fx-background-image: url('./zsk2ske_tools.gif');
+	-fx-background-repeat: no-repeat; 
+	-fx-background-size: 300 400; 
+	-fx-background-position: center center;
+}
 #titleField {
 	-fx-background-radius: 20px;
 }

@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="410" prefHeight="400.0" prefWidth="410.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.MyAppController">
+<VBox fx:id="appVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="410" prefHeight="400.0" prefWidth="410.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.MyAppController">
    <children>
       <MenuBar>
         <menus>
