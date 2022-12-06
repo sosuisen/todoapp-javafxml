@@ -47,6 +47,7 @@ public class MyAppController {
 			todoListHBoxes.add(createToDoHBox(todo));
 		});
 		
+		// ToDo追加
 		addBtn.setOnAction(e -> {
 			var title = titleField.getText();
 			LocalDate utcDate = datePicker.getValue();
@@ -56,5 +57,10 @@ public class MyAppController {
 			// dao.getAll().stream().forEach(todo->System.out.println(todo));
 			todoListHBoxes.add(createToDoHBox(newToDo));
 		});
+		
+		//TODO; ToDo更新
+		
+		//TODO: ToDo削除
+		
 	}
 }
