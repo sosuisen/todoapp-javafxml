@@ -2,19 +2,70 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.MyAppController">
-   <center>
-      <Label fx:id="label" text="Label" BorderPane.alignment="CENTER" />
-   </center>
-   <bottom>
-      <Button fx:id="button" mnemonicParsing="false" text="OK" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets bottom="20.0" />
-         </BorderPane.margin>
-      </Button>
-   </bottom>
-</BorderPane>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="410" prefHeight="400.0" prefWidth="410.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.MyAppController">
+   <children>
+      <MenuBar>
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <HBox styleClass="header">
+         <children>
+            <Label minWidth="-Infinity" text="新規ToDo" textFill="WHITE">
+               <padding>
+                  <Insets bottom="3.0" top="3.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="titleField" minWidth="-Infinity" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets left="7.0" right="7.0" />
+               </HBox.margin>
+            </TextField>
+            <Label minWidth="-Infinity" text="期日" textFill="WHITE">
+               <HBox.margin>
+                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+               </HBox.margin>
+            </Label>
+            <DatePicker fx:id="datePicker" minWidth="100" HBox.hgrow="NEVER">
+               <HBox.margin>
+                  <Insets right="7.0" />
+               </HBox.margin>
+            </DatePicker>
+            <Button fx:id="addBtn" minWidth="-Infinity" mnemonicParsing="false" text="追加">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Button>
+         </children>
+         <VBox.margin>
+            <Insets bottom="7.0" />
+         </VBox.margin>
+         <padding>
+            <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
+         </padding>
+      </HBox>
+      <VBox fx:id="todoList" />
+   </children>
+</VBox>
