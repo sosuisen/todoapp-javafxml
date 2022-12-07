@@ -10,7 +10,7 @@ public class ToDo {
 	
 	@Override
 	public String toString() {
-		return "ToDo [id=" + id + ", title=" + title + ", date=" + date + ", completed=" + completed + "]";
+		return "ToDo [id=%s, title=%s, date=%s, completed=%s".formatted(id, title, date, completed);
 	}
 	
 	public ToDo(int id, String title, LocalDate date, boolean completed) {

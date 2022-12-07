@@ -53,7 +53,7 @@ public class MemoryDAO implements DAO {
 
 	@Override
 	public Optional<ToDo> updateCompleted(int id, boolean completed) {
-		Optional<ToDo> targetTodo = todos.stream().filter(todo -> todo.getId() == id).findFirst();
+		Optional<ToDo> targetTodo = todos.stream().filter(todo -> todo.getId() == id).findFirst();		
 		if(targetTodo.isPresent()) targetTodo.get().setCompleted(completed);
 		return targetTodo;
 	}

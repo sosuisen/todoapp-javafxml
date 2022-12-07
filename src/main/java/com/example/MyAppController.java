@@ -23,7 +23,6 @@ public class MyAppController {
 
 	@FXML
 	private TextField titleField;
-
 	@FXML
 	private VBox todoListVBox;
 
@@ -51,10 +50,10 @@ public class MyAppController {
 		addBtn.setOnAction(e -> {
 			var title = titleField.getText();
 			LocalDate utcDate = datePicker.getValue();
-			// e.g.) 2022-12-06
-			// System.err.println("Selected date: " + utcDate);
+			// System.err.println("Selected date: " + utcDate); // 2022-12-06
 			ToDo newToDo = dao.create(title, utcDate);
-			// dao.getAll().stream().forEach(todo->System.out.println(todo));
+			// メソッド参照
+			// dao.getAll().stream().forEach(System.out::println);
 			todoListHBoxes.add(createToDoHBox(newToDo));
 		});
 		
