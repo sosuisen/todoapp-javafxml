@@ -34,16 +34,24 @@ public class MyAppController {
 		var completedCheckBox = new CheckBox();
 		completedCheckBox.setSelected(todo.isCompleted());
 		completedCheckBox.getStyleClass().add("todo-completed");
-
+		completedCheckBox.setOnAction(e -> {
+			dao.updateCompleted(todo.getId(), completedCheckBox.isSelected());
+		});
+		
 		var titleField = new TextField(todo.getTitle());
 		titleField.getStyleClass().add("todo-title");
 		HBox.setHgrow(titleField, Priority.ALWAYS);
+		titleField.setOnAction(e -> {
+			dao.updateTitle(todo.getId(), titleField.getText());			
+		});
 		
 		var datePicker = new DatePicker(todo.getDate());
 		datePicker.getStyleClass().add("todo-date");
-		datePicker.prefWidth(105);
-		datePicker.setMaxWidth(105);
+		datePicker.setPrefWidth(105);
 		HBox.setHgrow(datePicker, Priority.NEVER);
+		datePicker.setOnAction(e -> {
+			dao.updateDate(todo.getId(), datePicker.getValue());			
+		});
 		
 		var todoItem = new HBox(completedCheckBox, titleField, datePicker);
 		todoItem.getStyleClass().add("todo-item");
@@ -70,10 +78,5 @@ public class MyAppController {
 			// dao.getAll().stream().forEach(System.out::println);
 			todoListItems.add(createToDoHBox(newToDo));
 		});
-
-		//TODO; ToDo更新
-
-		//TODO: ToDo削除
-
 	}
 }
