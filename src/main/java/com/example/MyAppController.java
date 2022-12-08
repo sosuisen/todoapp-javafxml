@@ -41,8 +41,8 @@ public class MyAppController {
 		
 		var datePicker = new DatePicker(todo.getDate());
 		datePicker.getStyleClass().add("todo-date");
-		datePicker.prefWidth(100);
-		datePicker.setMaxWidth(100);
+		datePicker.prefWidth(105);
+		datePicker.setMaxWidth(105);
 		HBox.setHgrow(datePicker, Priority.NEVER);
 		
 		var todoItem = new HBox(completedCheckBox, titleField, datePicker);
