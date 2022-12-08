@@ -6,16 +6,16 @@ import java.util.Optional;
 
 public class MemoryDAO implements DAO {
 	private ArrayList<ToDo> todos = new ArrayList<ToDo>() {
-		// 匿名クラスのインスタンスイニシャライザを使用
+		// Use instance initializer of anonymouse class
 		{
-			add(new ToDo(1, "ネーム", LocalDate.of(2022, 12, 1), true));
-			add(new ToDo(2, "下描き", LocalDate.of(2022, 12, 2), false));
+			add(new ToDo(1, "Design", LocalDate.of(2022, 12, 1), true));
+			add(new ToDo(2, "Implementation", LocalDate.of(2022, 12, 7), false));
 		}
 	};
-	// MemoryDAO のインスタンスイニシャライザを使う場合、
-	// 毎回 add の前に storage. と書く必要があるので、少し長い。
+	// If you use MemoryDAO's instance initializer,
+	// you need to write "storage." before "add" each time, which is a bit long.
 	//	{
-	//		storage.add(new ToDo(1, "ネーム", LocalDate.of(2022, 12, 1), false));
+	//		storage.add(new ToDo(1, "", LocalDate.of(2022, 12, 1), false));
 	//	}
 
 	@Override

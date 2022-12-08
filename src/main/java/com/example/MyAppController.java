@@ -30,7 +30,6 @@ public class MyAppController {
 	private ObservableList<Node> todoListItems;
 
 	private HBox createToDoHBox(ToDo todo) {
-		// var idLabel = new Label(String.valueOf(todo.getId()));
 		var completedCheckBox = new CheckBox();
 		completedCheckBox.setSelected(todo.isCompleted());
 		completedCheckBox.getStyleClass().add("todo-completed");
@@ -52,29 +51,37 @@ public class MyAppController {
 		datePicker.setOnAction(e -> {
 			dao.updateDate(todo.getId(), datePicker.getValue());			
 		});
-		
-		var todoItem = new HBox(completedCheckBox, titleField, datePicker);
+
+		var deleteBtn = new Button("Delete");
+		deleteBtn.getStyleClass().add("todo-delete");
+
+		var todoItem = new HBox(completedCheckBox, titleField, datePicker, deleteBtn);
 		todoItem.getStyleClass().add("todo-item");
+		
+		deleteBtn.setOnAction(e -> {
+			dao.delete(todo.getId());
+			todoListItems.remove(todoItem);
+		});
+		
 		return todoItem;
 	}
 
 	public void initialize() {
-		// デフォルトで datePicker に今日の日付をセット
+		// Set today
 		datePicker.setValue(LocalDate.now());
 
 		todoListItems = todoListVBox.getChildren();
-		// ToDo読み込み
+
 		dao.getAll().forEach(todo -> {
 			todoListItems.add(createToDoHBox(todo));
 		});
 
-		// ToDo追加
 		addBtn.setOnAction(e -> {
 			var title = titleField.getText();
 			LocalDate utcDate = datePicker.getValue();
 			// System.err.println("Selected date: " + utcDate); // 2022-12-06
 			ToDo newToDo = dao.create(title, utcDate);
-			// メソッド参照
+			// Use Method Reference
 			// dao.getAll().stream().forEach(System.out::println);
 			todoListItems.add(createToDoHBox(newToDo));
 		});

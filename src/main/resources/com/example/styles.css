@@ -50,7 +50,11 @@
 }
 
 .todo-item{
+	-fx-spacing: 2px;
+}
 
+.todo-completed {
+	 -fx-padding: 3px 3px 0px 0px;
 }
 
 .todo-title{
@@ -59,8 +63,5 @@
 
 .todo-date {
 
-}
+}	
 
-.todo-completed {
-	 -fx-padding: 3px 3px 0px 0px;
-}
