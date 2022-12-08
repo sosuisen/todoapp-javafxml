@@ -44,3 +44,23 @@
 #addBtn:pressed {
 	-fx-background-color: #a08030;
 }
+
+#todoListVBox {
+	-fx-padding: 7px;	
+}
+
+.todo-item{
+
+}
+
+.todo-title{
+	
+}
+
+.todo-date {
+
+}
+
+.todo-completed {
+	 -fx-padding: 3px 3px 0px 0px;
+}

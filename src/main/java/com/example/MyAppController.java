@@ -6,15 +6,16 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class MyAppController {
 	DAO dao = new MemoryDAO();
-	
+
 	@FXML
 	private Button addBtn;
 
@@ -26,26 +27,39 @@ public class MyAppController {
 	@FXML
 	private VBox todoListVBox;
 
-	private ObservableList<Node> todoListHBoxes; 
+	private ObservableList<Node> todoListItems;
 
 	private HBox createToDoHBox(ToDo todo) {
-		var idLabel = new Label(String.valueOf(todo.getId()));
-		var titleLabel = new Label(todo.getTitle());
-		var dateLabel = new Label(todo.getDate().toString());
-		var completedLabel = new Label(String.valueOf(todo.isCompleted()));
-		return new HBox(idLabel, titleLabel, dateLabel, completedLabel);
+		// var idLabel = new Label(String.valueOf(todo.getId()));
+		var completedCheckBox = new CheckBox();
+		completedCheckBox.setSelected(todo.isCompleted());
+		completedCheckBox.getStyleClass().add("todo-completed");
+
+		var titleField = new TextField(todo.getTitle());
+		titleField.getStyleClass().add("todo-title");
+		HBox.setHgrow(titleField, Priority.ALWAYS);
+		
+		var datePicker = new DatePicker(todo.getDate());
+		datePicker.getStyleClass().add("todo-date");
+		datePicker.prefWidth(100);
+		datePicker.setMaxWidth(100);
+		HBox.setHgrow(datePicker, Priority.NEVER);
+		
+		var todoItem = new HBox(completedCheckBox, titleField, datePicker);
+		todoItem.getStyleClass().add("todo-item");
+		return todoItem;
 	}
-	
+
 	public void initialize() {
 		// デフォルトで datePicker に今日の日付をセット
 		datePicker.setValue(LocalDate.now());
-		
-		todoListHBoxes = todoListVBox.getChildren();		
+
+		todoListItems = todoListVBox.getChildren();
 		// ToDo読み込み
-		dao.getAll().forEach(todo->{
-			todoListHBoxes.add(createToDoHBox(todo));
+		dao.getAll().forEach(todo -> {
+			todoListItems.add(createToDoHBox(todo));
 		});
-		
+
 		// ToDo追加
 		addBtn.setOnAction(e -> {
 			var title = titleField.getText();
@@ -54,12 +68,12 @@ public class MyAppController {
 			ToDo newToDo = dao.create(title, utcDate);
 			// メソッド参照
 			// dao.getAll().stream().forEach(System.out::println);
-			todoListHBoxes.add(createToDoHBox(newToDo));
+			todoListItems.add(createToDoHBox(newToDo));
 		});
-		
+
 		//TODO; ToDo更新
-		
+
 		//TODO: ToDo削除
-		
+
 	}
 }
