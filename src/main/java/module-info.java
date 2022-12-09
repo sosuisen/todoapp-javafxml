@@ -5,7 +5,8 @@ module myapp {
     requires javafx.fxml;
     requires transitive javafx.graphics;
 	requires com.google.gson;
+	requires javafx.base;
     
-    opens com.example to javafx.fxml;
+    opens com.example to javafx.fxml, com.google.gson;
     exports com.example;
 }

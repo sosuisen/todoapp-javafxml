@@ -12,13 +12,7 @@ public class ToDo {
 	private String date;
 	private boolean completed;
 	
-	@Override
-	public String toString() {
-		return "ToDo [id=%s, title=%s, date=%s, completed=%s".formatted(id, title, date, completed);
-	}
-	
 	public ToDo(int id, String title, String date, boolean completed) {
-		super();
 		this.id = id;
 		this.title = title;
 		this.date = date;
