@@ -1,10 +1,15 @@
 package com.example;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
@@ -12,9 +17,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class MyAppController {
-	DAO dao = new MemoryDAO();
+	final String dataPath = "./tododata.json";
+
+	DAO dao = new MemoryDAO(dataPath);
 
 	@FXML
 	private Button addBtn;
@@ -24,6 +32,7 @@ public class MyAppController {
 
 	@FXML
 	private TextField titleField;
+
 	@FXML
 	private VBox todoListVBox;
 
@@ -36,20 +45,20 @@ public class MyAppController {
 		completedCheckBox.setOnAction(e -> {
 			dao.updateCompleted(todo.getId(), completedCheckBox.isSelected());
 		});
-		
+
 		var titleField = new TextField(todo.getTitle());
 		titleField.getStyleClass().add("todo-title");
 		HBox.setHgrow(titleField, Priority.ALWAYS);
 		titleField.setOnAction(e -> {
-			dao.updateTitle(todo.getId(), titleField.getText());			
+			dao.updateTitle(todo.getId(), titleField.getText());
 		});
-		
+
 		var datePicker = new DatePicker(todo.getLocalDate());
 		datePicker.getStyleClass().add("todo-date");
 		datePicker.setPrefWidth(105);
 		HBox.setHgrow(datePicker, Priority.NEVER);
 		datePicker.setOnAction(e -> {
-			dao.updateDate(todo.getId(), datePicker.getValue().toString());			
+			dao.updateDate(todo.getId(), datePicker.getValue().toString());
 		});
 
 		var deleteBtn = new Button("Delete");
@@ -57,13 +66,40 @@ public class MyAppController {
 
 		var todoItem = new HBox(completedCheckBox, titleField, datePicker, deleteBtn);
 		todoItem.getStyleClass().add("todo-item");
-		
+
 		deleteBtn.setOnAction(e -> {
 			dao.delete(todo.getId());
 			todoListItems.remove(todoItem);
 		});
-		
+
 		return todoItem;
+	}
+
+	private void showError(String txt) {
+		Alert dialog = new Alert(AlertType.ERROR);
+		dialog.setHeaderText("Error");
+		dialog.setContentText(txt);
+		dialog.showAndWait();
+	}
+
+	/**
+	 * Must be called in Application.start() after FXML is loaded
+	 * to get stage.
+	 */
+	public void rendered(Stage stage) {
+		// For set beforeunload,
+		// use showingProperty instead of setOnCloseRequest
+		// https://torutk.hatenablog.jp/entry/20170613/p1
+		stage.showingProperty().addListener((observable, oldValue, newValue) -> {
+			if (oldValue == true && newValue == false) {
+				try {
+					((MemoryDAO) dao).save(dataPath);
+				} catch (IOException e1) {
+					showError("Failed to write to " + dataPath);
+					e1.printStackTrace();
+				}
+			}
+		});
 	}
 
 	public void initialize() {
@@ -76,13 +112,16 @@ public class MyAppController {
 			todoListItems.add(createToDoHBox(todo));
 		});
 
-		addBtn.setOnAction(e -> {
+		EventHandler<ActionEvent> handler = e -> {
 			var title = titleField.getText();
+			if (title.equals(""))
+				return;
 			LocalDate localDate = datePicker.getValue(); // 2022-12-01
 			ToDo newToDo = dao.create(title, localDate.toString());
-			// Use Method Reference
-			// dao.getAll().stream().forEach(System.out::println);
 			todoListItems.add(createToDoHBox(newToDo));
-		});
+			titleField.setText("");
+		};
+		titleField.setOnAction(handler);
+		addBtn.setOnAction(handler);
 	}
 }

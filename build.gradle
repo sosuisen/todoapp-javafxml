@@ -1,11 +1,9 @@
 /*
----------------------------------------------------------------------------------------------------
-JavaFX 用のサンプルビルド定義
-モジュール名が myapp
-パッケージ名が com.example
-mainメソッドを含むクラスが com.example.MyApp
-アプリのファイル名がMyAppの場合
----------------------------------------------------------------------------------------------------
+Sample for JavaFX
+ - module name: myapp
+ - package name: com.example
+ - Main class: com.example.MyApp
+ - App name: MyApp
 */
 plugins {
   id 'application'
@@ -18,17 +16,21 @@ repositories {
     mavenCentral()
 }
 
-compileJava.options.encoding = "UTF-8"
-compileTestJava.options.encoding = "UTF-8"
+dependencies {
+  implementation 'com.google.code.gson:gson:2.9.1'
+}
+
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
 
 javafx {
-    version = "19"
+    version = '19'
     modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
 application {
     mainModule = 'myapp'
-    mainClass = "com.example.MyApp"
+    mainClass = 'com.example.MyApp'
 }
 
 eclipse {
