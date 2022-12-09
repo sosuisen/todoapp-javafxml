@@ -1,6 +1,5 @@
 package com.example;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -19,7 +18,7 @@ public interface DAO {
 	/**
 	 * @return created ToDo
 	 */
-	public ToDo create(String title, LocalDate date);	
+	public ToDo create(String title, String date);	
 	/**
 	 * @return updated ToDo
 	 */
@@ -27,7 +26,7 @@ public interface DAO {
 	/**
 	 * @return updated ToDo
 	 */
-	public Optional<ToDo> updateDate(int id, LocalDate date);
+	public Optional<ToDo> updateDate(int id, String date);
 	/**
 	 * @return updated ToDo
 	 */
