@@ -5,7 +5,11 @@ import java.time.LocalDate;
 public class ToDo {
 	private int id;
 	private String title;
-	private LocalDate date;
+	/**
+	 * Local date string
+	 * e.g. 2022-12-01
+	 */
+	private String date;
 	private boolean completed;
 	
 	@Override
@@ -13,7 +17,7 @@ public class ToDo {
 		return "ToDo [id=%s, title=%s, date=%s, completed=%s".formatted(id, title, date, completed);
 	}
 	
-	public ToDo(int id, String title, LocalDate date, boolean completed) {
+	public ToDo(int id, String title, String date, boolean completed) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -32,11 +36,23 @@ public class ToDo {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public LocalDate getDate() {
+	/**
+	 * @return date string e.g. 2022-12-01
+	 */
+	public String getDate() {
 		return date;
 	}
-	public void setDate(LocalDate date) {
+	/**
+	 * @param date date string e.g. 2022-12-01
+	 */
+	public void setDate(String date) {
 		this.date = date;
+	}
+	public LocalDate getLocalDate() {
+		return LocalDate.parse(date);
+	}
+	public void setLocalDate(LocalDate localDate) {
+		this.date = localDate.toString();
 	}
 	public boolean isCompleted() {
 		return completed;

@@ -44,12 +44,12 @@ public class MyAppController {
 			dao.updateTitle(todo.getId(), titleField.getText());			
 		});
 		
-		var datePicker = new DatePicker(todo.getDate());
+		var datePicker = new DatePicker(todo.getLocalDate());
 		datePicker.getStyleClass().add("todo-date");
 		datePicker.setPrefWidth(105);
 		HBox.setHgrow(datePicker, Priority.NEVER);
 		datePicker.setOnAction(e -> {
-			dao.updateDate(todo.getId(), datePicker.getValue());			
+			dao.updateDate(todo.getId(), datePicker.getValue().toString());			
 		});
 
 		var deleteBtn = new Button("Delete");
@@ -78,9 +78,8 @@ public class MyAppController {
 
 		addBtn.setOnAction(e -> {
 			var title = titleField.getText();
-			LocalDate utcDate = datePicker.getValue();
-			// System.err.println("Selected date: " + utcDate); // 2022-12-06
-			ToDo newToDo = dao.create(title, utcDate);
+			LocalDate localDate = datePicker.getValue(); // 2022-12-01
+			ToDo newToDo = dao.create(title, localDate.toString());
 			// Use Method Reference
 			// dao.getAll().stream().forEach(System.out::println);
 			todoListItems.add(createToDoHBox(newToDo));
