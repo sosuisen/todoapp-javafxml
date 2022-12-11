@@ -2,8 +2,11 @@ package com.example;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -13,6 +16,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
@@ -26,6 +30,17 @@ public class MyAppController {
 
 	DAO dao = new MemoryDAO(dataPath);
 
+	final String TODO_COMPLETED = "Completed";
+	final String TODO_TITLE = "Title";
+	final String TODO_DATE = "Date";
+	final LinkedHashMap<String, Integer> MENU = new LinkedHashMap<String, Integer>() {{
+		put(TODO_COMPLETED, 0);
+		put(TODO_TITLE, 1);
+		put(TODO_DATE, 2);
+	}};
+	final String SORT_ASCENDANT = "Ascendant";
+	final String SORT_DESCENDANT = "Descendant";
+	
 	@FXML
 	private Button addBtn;
 
@@ -38,24 +53,30 @@ public class MyAppController {
 	@FXML
 	private VBox todoListVBox;
 
-    @FXML
-    private MenuItem menuItemAbout;
+	@FXML
+	private MenuItem menuItemAbout;
 
-    @FXML
-    private MenuItem menuItemClose;
-	
-    @FXML
-    void onItemMenuAbout(ActionEvent event) {
-    	showInfo("ToDo App");
-    }
+	@FXML
+	private MenuItem menuItemClose;
 
-    @FXML
-    void onMenuItemClose(ActionEvent event) {
-    	Platform.exit();
-    }
-	
-    private ObservableList<Node> todoListItems;
-	
+	@FXML
+	private ChoiceBox<String> sortTypeMenu;
+
+	@FXML
+	private ChoiceBox<String> sortOrderMenu;
+
+	@FXML
+	void onItemMenuAbout(ActionEvent event) {
+		showInfo("ToDo App");
+	}
+
+	@FXML
+	void onMenuItemClose(ActionEvent event) {
+		Platform.exit();
+	}
+
+	private ObservableList<Node> todoListItems;
+
 	private HBox createToDoHBox(ToDo todo) {
 		var completedCheckBox = new CheckBox();
 		completedCheckBox.setSelected(todo.isCompleted());
@@ -69,6 +90,11 @@ public class MyAppController {
 		HBox.setHgrow(titleField, Priority.ALWAYS);
 		titleField.setOnAction(e -> {
 			dao.updateTitle(todo.getId(), titleField.getText());
+		});
+		titleField.focusedProperty().addListener((observable, oldProperty, newProperty) -> {
+			if (!newProperty) {
+				dao.updateTitle(todo.getId(), titleField.getText());
+			}
 		});
 
 		var datePicker = new DatePicker(todo.getLocalDate());
@@ -127,13 +153,44 @@ public class MyAppController {
 		});
 	}
 
+	private void sort(String type, String order) {
+		Comparator<Node> comp = null;
+		switch(type){
+		case TODO_COMPLETED:
+			comp = Comparator.comparing(node -> ((CheckBox)((HBox)node).getChildren().get(MENU.get(TODO_COMPLETED))).isSelected());
+			break;
+		case TODO_TITLE:
+			comp = Comparator.comparing(node -> ((TextField)((HBox)node).getChildren().get(MENU.get(TODO_TITLE))).getText());
+			break;
+		case TODO_DATE:
+		default:
+			comp = Comparator.comparing(node -> ((DatePicker)((HBox)node).getChildren().get(MENU.get(TODO_DATE))).getValue());
+			break;
+		}
+		if (order.equals(SORT_DESCENDANT)) {
+			comp = comp.reversed();
+		}
+		FXCollections.sort(todoListItems, comp);
+	}
+
 	public void initialize() {
+		sortTypeMenu.getItems().addAll(MENU.keySet());
+		sortTypeMenu.setValue(TODO_DATE);
+		sortTypeMenu.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> sort(newValue, sortOrderMenu.getValue()));
+		
+		sortOrderMenu.getItems().addAll(SORT_ASCENDANT, SORT_DESCENDANT);
+		sortOrderMenu.setValue(SORT_ASCENDANT);
+		sortOrderMenu.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> sort(sortTypeMenu.getValue(), newValue));
+
+
 		// Set today
 		datePicker.setValue(LocalDate.now());
 
 		todoListItems = todoListVBox.getChildren();
 
-		dao.getAll().forEach(todo -> {
+		dao.getAll().stream()
+		.sorted(Comparator.comparing(ToDo::getDate))
+		.forEach(todo -> {
 			todoListItems.add(createToDoHBox(todo));
 		});
 
@@ -144,6 +201,7 @@ public class MyAppController {
 			LocalDate localDate = datePicker.getValue(); // 2022-12-01
 			ToDo newToDo = dao.create(title, localDate.toString());
 			todoListItems.add(createToDoHBox(newToDo));
+			sort(sortTypeMenu.getValue(), sortOrderMenu.getValue());
 			titleField.setText("");
 		};
 		titleField.setOnAction(handler);

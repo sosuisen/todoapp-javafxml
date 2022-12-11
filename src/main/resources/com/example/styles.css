@@ -45,6 +45,19 @@
 	-fx-background-color: #a08030;
 }
 
+#second-header {
+	-fx-spacing: 7px;
+	-fx-padding: 7px;
+}
+
+.second-header-label{
+	/*
+	 * Cannot do this
+	 * -fx-padding-top: 3px;
+	 */
+	 -fx-padding: 3px 0px 0px 0px;
+}
+
 #todoListVBox {
 	-fx-padding: 7px;	
 }
