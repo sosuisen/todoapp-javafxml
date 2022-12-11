@@ -3,6 +3,7 @@ package com.example;
 import java.io.IOException;
 import java.time.LocalDate;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -13,6 +14,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -36,8 +38,24 @@ public class MyAppController {
 	@FXML
 	private VBox todoListVBox;
 
-	private ObservableList<Node> todoListItems;
+    @FXML
+    private MenuItem menuItemAbout;
 
+    @FXML
+    private MenuItem menuItemClose;
+	
+    @FXML
+    void onItemMenuAbout(ActionEvent event) {
+    	showInfo("ToDo App");
+    }
+
+    @FXML
+    void onMenuItemClose(ActionEvent event) {
+    	Platform.exit();
+    }
+	
+    private ObservableList<Node> todoListItems;
+	
 	private HBox createToDoHBox(ToDo todo) {
 		var completedCheckBox = new CheckBox();
 		completedCheckBox.setSelected(todo.isCompleted());
@@ -75,9 +93,16 @@ public class MyAppController {
 		return todoItem;
 	}
 
+	private void showInfo(String txt) {
+		Alert dialog = new Alert(AlertType.INFORMATION);
+		dialog.setHeaderText(null);
+		dialog.setContentText(txt);
+		dialog.showAndWait();
+	}
+
 	private void showError(String txt) {
 		Alert dialog = new Alert(AlertType.ERROR);
-		dialog.setHeaderText("Error");
+		dialog.setHeaderText(null);
 		dialog.setContentText(txt);
 		dialog.showAndWait();
 	}
