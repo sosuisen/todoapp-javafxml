@@ -31,6 +31,9 @@ javafx {
 application {
     mainModule = 'myapp'
     mainClass = 'com.example.MyApp'
+    if (System.getProperty('DEBUG', 'false') == 'true') {
+    	applicationDefaultJvmArgs = ["-agentlib:jdwp=transport=dt_socket,server=y,address=localhost:5005"]
+    }
 }
 
 eclipse {
