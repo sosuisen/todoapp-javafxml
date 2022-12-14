@@ -130,7 +130,7 @@ tmp/
 *.swp
 *~.nib
 local.properties
-.settings/
+#.settings/
 .loadpath
 .recommenders
 
@@ -196,7 +196,7 @@ nbdist/
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
 
 # Thumbnails
 ._*
